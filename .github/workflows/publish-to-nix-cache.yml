@@ -19,6 +19,7 @@ jobs:
     - uses: cachix/install-nix-action@v25
       with:
         nix_path: nixpkgs=channel:nixos-unstable
+        skipPush: true  # we only want to push roc_cli
     - uses: cachix/cachix-action@v14
       with:
         name: roc-lang
@@ -26,8 +27,7 @@ jobs:
 
     - run: |
         nix build
-        nix path-info --json > temp.txt
-        nix path-info --json | jq -r 'keys[0]' >> temp.txt
+        nix path-info --json | jq -r 'keys[0]' > temp.txt
         echo "I'm about to upload:"
         cat temp.txt
         echo "Here we go..."

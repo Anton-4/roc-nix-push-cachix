@@ -24,4 +24,6 @@ jobs:
         name: roc-lang
         authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
 
-    - run: nix-build | cachix push roc-lang
+    - run: |
+        nix build
+        nix path-info --json | jq -r '.[].path' | cachix push roc-lang

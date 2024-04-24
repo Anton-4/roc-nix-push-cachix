@@ -1,0 +1,34 @@
+name: "Nightly publish to nix cache."
+on:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+        - cron: "0 9 * * *" # 9=9am utc+0
+
+jobs:
+  publish-nightly-to-nix-cache:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ macos-11, macos-14, ubuntu-22.04 ]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        repository: 'roc-lang/roc'
+    - uses: cachix/install-nix-action@v25
+      with:
+        nix_path: nixpkgs=channel:nixos-unstable
+        skipPush: true  # we only want to push roc_cli
+    - uses: cachix/cachix-action@v14
+      with:
+        name: roc-lang
+        authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+
+    - run: |
+        nix build
+        nix path-info --json | jq -r 'keys[0]' > temp.txt
+        echo "I'm about to upload:"
+        cat temp.txt
+        echo "Here we go..."
+        nix path-info --json | jq -r 'keys[0]' | cachix push roc-lang

@@ -26,7 +26,9 @@ jobs:
 
     - run: |
         nix build
+        nix path-info --json > temp.txt
+        nix path-info --json | jq -r '.[].path' >> temp.txt
         echo "I'm about to upload:"
-        nix path-info --json | jq -r '.[].path' | echo
+        cat temp.txt
         echo "Here we go..."
         nix path-info --json | jq -r '.[].path' | cachix push roc-lang

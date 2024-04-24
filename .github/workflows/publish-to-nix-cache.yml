@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ macos-11, ubuntu-22.04 ]
+        os: [ macos-11, macos-14, ubuntu-22.04 ]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
@@ -26,4 +26,7 @@ jobs:
 
     - run: |
         nix build
+        echo "I'm about to upload:"
+        nix path-info --json | jq -r '.[].path' | echo
+        echo "Here we go..."
         nix path-info --json | jq -r '.[].path' | cachix push roc-lang

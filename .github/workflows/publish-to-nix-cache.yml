@@ -32,3 +32,25 @@ jobs:
         cat temp.txt
         echo "Here we go..."
         nix path-info --json | jq -r 'keys[0]' | cachix push roc-lang
+
+    - name: Get the current commit SHA
+      run: echo "CURRENT_COMMIT_SHA=$(git rev-parse HEAD)" >> $GITHUB_ENV
+
+    - uses: actions/checkout@v4  # Checkout the current repository
+      with:
+        path: 'current-repo'
+
+    - name: Append current commit SHA to Roc-commits-in-cache.md
+      run: echo "$CURRENT_COMMIT_SHA" >> $GITHUB_WORKSPACE/current-repo/Roc-commits-in-cache.md
+
+    - name: Cut Roc-commits-in-cache.md to 21 lines
+      run: tail -n 21 $GITHUB_WORKSPACE/current-repo/Roc-commits-in-cache.md > temp.md && mv temp.md $GITHUB_WORKSPACE/current-repo/Roc-commits-in-cache.md
+
+    - name: Commit and push changes
+      run: |
+        cd $GITHUB_WORKSPACE/current-repo
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add Roc-commits-in-cache.md
+        git commit -m "Append roc commit SHA to Roc-commits-in-cache.md"
+        git push

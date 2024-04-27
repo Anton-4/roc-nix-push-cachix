@@ -1,6 +1,6 @@
 name: "Nightly publish to nix cache."
 on:
-  pull_request:
+  #pull_request:
   workflow_dispatch:
   schedule:
         - cron: "0 9 * * *" # 9=9am utc+0
@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-22.04 ]
+        os: [ macos-11, macos-14, ubuntu-22.04 ]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4

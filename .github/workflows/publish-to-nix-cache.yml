@@ -47,6 +47,7 @@ jobs:
     - uses: actions/checkout@v4  # Checkout the current repository
       with:
         path: 'current-repo'
+        ref: 'main'
 
     - name: Append current commit SHA to Roc-commits-in-cache.md
       run: echo "$CURRENT_COMMIT_SHA" >> $GITHUB_WORKSPACE/current-repo/Roc-commits-in-cache.md
@@ -57,8 +58,6 @@ jobs:
     - name: Commit and push changes
       run: |
         cd $GITHUB_WORKSPACE/current-repo
-        ls .
-        git status
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add Roc-commits-in-cache.md

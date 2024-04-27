@@ -62,4 +62,4 @@ jobs:
         git config --local user.name "GitHub Action"
         git add Roc-commits-in-cache.md
         git commit -m "Append roc commit SHA to Roc-commits-in-cache.md"
-        git push https://${{ secrets.GH_ACTIONS_PAT }}@github.com/${{ github.repository }} main
+        git push https://17049058:${{ secrets.GH_ACTIONS_PAT }}@github.com/${{ github.repository }} main

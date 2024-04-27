@@ -51,17 +51,17 @@ jobs:
         path: 'current-repo'
         ref: 'main'
 
-    - name: Append current commit SHA to Roc-commits-in-cache.md
-      run: echo "$CURRENT_COMMIT_SHA" >> $GITHUB_WORKSPACE/current-repo/Roc-commits-in-cache.md
+    - name: Append current commit SHA to Roc-commits-in-cache.txt
+      run: echo "$CURRENT_COMMIT_SHA" >> $GITHUB_WORKSPACE/current-repo/Roc-commits-in-cache.txt
 
-    - name: Cut Roc-commits-in-cache.md to 21 lines
-      run: tail -n 21 $GITHUB_WORKSPACE/current-repo/Roc-commits-in-cache.md > temp.md && mv temp.md $GITHUB_WORKSPACE/current-repo/Roc-commits-in-cache.md
+    - name: Cut Roc-commits-in-cache.txt to 21 lines
+      run: tail -n 21 $GITHUB_WORKSPACE/current-repo/Roc-commits-in-cache.txt > temp.md && mv temp.md $GITHUB_WORKSPACE/current-repo/Roc-commits-in-cache.txt
 
     - name: Commit and push changes
       run: |
         cd $GITHUB_WORKSPACE/current-repo
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add Roc-commits-in-cache.md
-        git commit -m "Append roc commit SHA to Roc-commits-in-cache.md"
+        git add Roc-commits-in-cache.txt
+        git commit -m "Append roc commit SHA to Roc-commits-in-cache.txt"
         git push https://17049058:${{ secrets.GH_ACTIONS_PAT }}@github.com/${{ github.repository }} main

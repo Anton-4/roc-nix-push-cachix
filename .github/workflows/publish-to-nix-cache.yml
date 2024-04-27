@@ -79,6 +79,8 @@ jobs:
     - name: Commit and push changes
       run: |
         cd $GITHUB_WORKSPACE/current-repo
+        ls .
+        git status
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add Roc-commits-in-cache.md

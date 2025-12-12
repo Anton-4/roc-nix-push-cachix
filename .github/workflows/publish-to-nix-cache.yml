@@ -2,8 +2,8 @@ name: "Nightly publish to nix cache."
 on:
   #pull_request:
   workflow_dispatch:
-  schedule:
-        - cron: "0 9 * * *" # 9=9am utc+0
+  #schedule:
+  #      - cron: "0 9 * * *" # 9=9am utc+0
 
 jobs:
   publish-nightly-to-nix-cache:
